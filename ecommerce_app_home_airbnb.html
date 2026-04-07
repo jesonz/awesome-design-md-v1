@@ -1,0 +1,559 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>电商App首页 · Airbnb规范</title>
+  <style>
+    :root {
+      --palette-bg-primary-core: #ff385c;
+      --palette-bg-tertiary-core: #e00b41;
+      --palette-text-primary: #222222;
+      --palette-text-focused: #3f3f3f;
+      --palette-text-secondary: #6a6a6a;
+      --palette-text-disabled: rgba(0, 0, 0, 0.24);
+      --palette-bg-white: #ffffff;
+      --palette-surface-light: #f2f2f2;
+      --palette-border: #c1c1c1;
+      --palette-legal: #428bff;
+
+      --shadow-card:
+        rgba(0, 0, 0, 0.02) 0px 0px 0px 1px,
+        rgba(0, 0, 0, 0.04) 0px 2px 6px,
+        rgba(0, 0, 0, 0.1) 0px 4px 8px;
+      --shadow-hover: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+
+      --r-8: 8px;
+      --r-14: 14px;
+      --r-20: 20px;
+      --r-32: 32px;
+      --r-full: 9999px;
+
+      --container: min(1128px, calc(100% - 28px));
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--palette-bg-white);
+      color: var(--palette-text-primary);
+      font-family: "Airbnb Cereal VF", "Circular", -apple-system, system-ui, Roboto, "Helvetica Neue", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .app {
+      min-height: 100vh;
+      padding-bottom: 84px;
+    }
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(8px) saturate(160%);
+      border-bottom: 1px solid #ededed;
+    }
+
+    .header-inner {
+      width: var(--container);
+      margin: 0 auto;
+      padding: 10px 0 12px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--palette-bg-primary-core);
+      font-size: 22px;
+      line-height: 1.1;
+      letter-spacing: -0.3px;
+      font-weight: 700;
+    }
+
+    .brand-dot {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--palette-bg-primary-core);
+    }
+
+    .icon-btn {
+      width: 38px;
+      height: 38px;
+      border: 0;
+      border-radius: 50%;
+      background: var(--palette-surface-light);
+      color: var(--palette-text-primary);
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    .search {
+      height: 56px;
+      border-radius: var(--r-32);
+      background: #fff;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 8px 0 18px;
+      font-size: 14px;
+      color: var(--palette-text-secondary);
+      font-weight: 500;
+    }
+
+    .search strong { color: var(--palette-text-primary); font-weight: 600; }
+
+    .search-btn {
+      margin-left: auto;
+      width: 36px;
+      height: 36px;
+      border: 0;
+      border-radius: 50%;
+      background: var(--palette-bg-primary-core);
+      color: #fff;
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    .category-row {
+      width: var(--container);
+      margin: 14px auto 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      scrollbar-width: none;
+    }
+
+    .category-row::-webkit-scrollbar { display: none; }
+
+    .chip {
+      border: 0;
+      border-radius: var(--r-full);
+      background: var(--palette-surface-light);
+      color: var(--palette-text-focused);
+      padding: 9px 14px;
+      font-size: 14px;
+      line-height: 1.29;
+      white-space: nowrap;
+      font-weight: 500;
+      box-shadow: var(--shadow-card);
+    }
+
+    .chip.active { background: var(--palette-text-primary); color: #fff; }
+
+    .container {
+      width: var(--container);
+      margin: 18px auto 0;
+    }
+
+    .hero {
+      border-radius: var(--r-32);
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+      position: relative;
+      min-height: 230px;
+      display: grid;
+      align-items: end;
+    }
+
+    .hero img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.5), rgba(0,0,0,0.08));
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      padding: 18px;
+      color: #fff;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      height: 24px;
+      border-radius: var(--r-14);
+      padding: 0 10px;
+      background: rgba(255,255,255,0.22);
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1.33;
+    }
+
+    .hero h1 {
+      margin: 8px 0 0;
+      font-size: 28px;
+      line-height: 1.1;
+      letter-spacing: -0.44px;
+      font-weight: 700;
+    }
+
+    .hero p {
+      margin: 6px 0 0;
+      font-size: 14px;
+      line-height: 1.43;
+      color: rgba(255,255,255,0.95);
+    }
+
+    .section { margin-top: 28px; }
+
+    .section-head {
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.43;
+      font-weight: 700;
+    }
+
+    .section-link {
+      font-size: 14px;
+      line-height: 1.43;
+      color: var(--palette-legal);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: var(--r-20);
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+    }
+
+    .card-media {
+      position: relative;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+    }
+
+    .card-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .badge {
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 10px;
+      border-radius: var(--r-14);
+      background: rgba(255,255,255,0.92);
+      color: var(--palette-text-primary);
+      font-size: 11px;
+      font-weight: 600;
+      line-height: 1.18;
+    }
+
+    .wish {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      width: 34px;
+      height: 34px;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.92);
+      box-shadow: var(--shadow-card);
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    .card-body { padding: 12px; }
+
+    .name {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.2;
+      letter-spacing: -0.18px;
+      font-weight: 600;
+      color: var(--palette-text-primary);
+    }
+
+    .meta {
+      margin-top: 5px;
+      font-size: 13px;
+      line-height: 1.23;
+      color: var(--palette-text-secondary);
+    }
+
+    .price-row {
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .price {
+      font-size: 16px;
+      line-height: 1.25;
+      font-weight: 600;
+      color: var(--palette-text-primary);
+    }
+
+    .price s {
+      margin-left: 6px;
+      color: var(--palette-text-disabled);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .buy-btn {
+      border: 0;
+      border-radius: var(--r-8);
+      height: 34px;
+      padding: 0 12px;
+      background: var(--palette-text-primary);
+      color: #fff;
+      font-size: 13px;
+      line-height: 1.29;
+      font-weight: 500;
+    }
+
+    .footer-nav {
+      position: fixed;
+      left: 50%;
+      bottom: 12px;
+      transform: translateX(-50%);
+      width: min(430px, calc(100% - 24px));
+      height: 64px;
+      border-radius: var(--r-32);
+      background: #fff;
+      box-shadow: var(--shadow-card);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      align-items: center;
+      z-index: 60;
+    }
+
+    .nav-item {
+      text-align: center;
+      font-size: 12px;
+      line-height: 1.33;
+      color: var(--palette-text-secondary);
+      font-weight: 500;
+    }
+
+    .nav-item.active { color: var(--palette-bg-primary-core); font-weight: 600; }
+
+    .nav-item b {
+      display: block;
+      font-size: 16px;
+      line-height: 1;
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    @media (min-width: 950px) {
+      .cards { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 890px) {
+      .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 576px) {
+      :root { --container: min(100%, calc(100% - 20px)); }
+
+      .search { height: 52px; font-size: 13px; }
+
+      .hero h1 { font-size: 24px; }
+
+      .section-title { font-size: 24px; }
+
+      .cards { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="header-inner">
+        <div class="header-top">
+          <div class="brand"><span class="brand-dot"></span> Shopbnb</div>
+          <button class="icon-btn" aria-label="消息">🔔</button>
+        </div>
+        <div class="search">
+          <strong>搜索商品、品牌、灵感</strong>
+          <button class="search-btn" aria-label="搜索">🔍</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="category-row" aria-label="分类">
+      <button class="chip active">推荐</button>
+      <button class="chip">家居</button>
+      <button class="chip">服饰</button>
+      <button class="chip">美妆</button>
+      <button class="chip">数码</button>
+      <button class="chip">母婴</button>
+      <button class="chip">运动</button>
+    </div>
+
+    <main class="container">
+      <section class="hero">
+        <img src="https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?auto=format&fit=crop&w=1600&q=80" alt="大促海报" />
+        <div class="hero-content">
+          <span class="hero-tag">限时活动</span>
+          <h1>春夏焕新精选</h1>
+          <p>家居与生活好物低至 7 折，今晚 24:00 截止</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <h2 class="section-title">热门商品</h2>
+          <a class="section-link" href="#">查看全部</a>
+        </div>
+
+        <div class="cards">
+          <article class="card">
+            <div class="card-media">
+              <img src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=900&q=80" alt="北欧边桌" />
+              <span class="badge">新品</span><button class="wish" aria-label="收藏">♡</button>
+            </div>
+            <div class="card-body">
+              <h3 class="name">北欧原木边桌</h3>
+              <div class="meta">简约家居 · 次日达</div>
+              <div class="price-row"><div class="price">¥299 <s>¥399</s></div><button class="buy-btn">立即购买</button></div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-media">
+              <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=80" alt="卫衣" />
+              <span class="badge">爆款</span><button class="wish" aria-label="收藏">♡</button>
+            </div>
+            <div class="card-body">
+              <h3 class="name">连帽宽松卫衣</h3>
+              <div class="meta">春季新品 · 3色可选</div>
+              <div class="price-row"><div class="price">¥139 <s>¥199</s></div><button class="buy-btn">立即购买</button></div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-media">
+              <img src="https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=900&q=80" alt="香氛" />
+              <span class="badge">精选</span><button class="wish" aria-label="收藏">♡</button>
+            </div>
+            <div class="card-body">
+              <h3 class="name">木质香氛蜡烛</h3>
+              <div class="meta">居家香氛 · 200g</div>
+              <div class="price-row"><div class="price">¥79 <s>¥109</s></div><button class="buy-btn">立即购买</button></div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-media">
+              <img src="https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=900&q=80" alt="耳机" />
+              <span class="badge">直降</span><button class="wish" aria-label="收藏">♡</button>
+            </div>
+            <div class="card-body">
+              <h3 class="name">降噪蓝牙耳机</h3>
+              <div class="meta">48h续航 · 双设备切换</div>
+              <div class="price-row"><div class="price">¥459 <s>¥599</s></div><button class="buy-btn">立即购买</button></div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-media">
+              <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=900&q=80" alt="水杯" />
+              <span class="badge">口碑</span><button class="wish" aria-label="收藏">♡</button>
+            </div>
+            <div class="card-body">
+              <h3 class="name">不锈钢保温杯</h3>
+              <div class="meta">500ml · 6小时保温</div>
+              <div class="price-row"><div class="price">¥89 <s>¥129</s></div><button class="buy-btn">立即购买</button></div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-media">
+              <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=900&q=80" alt="相机" />
+              <span class="badge">热卖</span><button class="wish" aria-label="收藏">♡</button>
+            </div>
+            <div class="card-body">
+              <h3 class="name">复古便携相机</h3>
+              <div class="meta">高清成像 · 轻量机身</div>
+              <div class="price-row"><div class="price">¥899 <s>¥1099</s></div><button class="buy-btn">立即购买</button></div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-media">
+              <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=900&q=80" alt="沙发" />
+              <span class="badge">家居</span><button class="wish" aria-label="收藏">♡</button>
+            </div>
+            <div class="card-body">
+              <h3 class="name">云感双人沙发</h3>
+              <div class="meta">可拆洗 · 小户型友好</div>
+              <div class="price-row"><div class="price">¥1899 <s>¥2399</s></div><button class="buy-btn">立即购买</button></div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-media">
+              <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=900&q=80" alt="收纳盒" />
+              <span class="badge">凑单</span><button class="wish" aria-label="收藏">♡</button>
+            </div>
+            <div class="card-body">
+              <h3 class="name">模块化收纳盒</h3>
+              <div class="meta">桌面整理 · 3件装</div>
+              <div class="price-row"><div class="price">¥39 <s>¥59</s></div><button class="buy-btn">立即购买</button></div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <nav class="footer-nav" aria-label="底部导航">
+      <div class="nav-item active"><b>⌂</b>首页</div>
+      <div class="nav-item"><b>🧭</b>发现</div>
+      <div class="nav-item"><b>🛒</b>购物车</div>
+      <div class="nav-item"><b>☺</b>我的</div>
+    </nav>
+  </div>
+</body>
+</html>
